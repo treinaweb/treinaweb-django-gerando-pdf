@@ -1,4 +1,10 @@
+import tempfile
+
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from weasyprint import HTML
+
 from ..forms import pedido_forms
 from ..entidades import pedido
 from ..services import pedido_service
@@ -44,3 +50,20 @@ def editar_pedido(request, id):
         pedido_service.editar_pedido(pedido_antigo, pedido_novo)
         return redirect('listar_pedidos')
     return render(request, 'pedidos/form_pedido.html', {'form_pedido': form_pedido})
+
+def gerar_pdf_pedidos(request):
+    pedidos = pedido_service.listar_pedidos()
+    html_string = render_to_string('pedidos/pdf.html', {'pedidos': pedidos})
+    html = HTML(string=html_string)
+    resultado_pdf = html.write_pdf()
+
+    resposta = HttpResponse(content_type='application/pdf;')
+    resposta['Content-Disposition'] = 'inline; filename=lista_pedidos.pdf'
+    resposta['Content-Transfer-Enconding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(resultado_pdf)
+        output.flush()
+        output = open(output.name, 'rb')
+        resposta.write(output.read())
+
+    return resposta

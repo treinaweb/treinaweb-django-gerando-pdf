@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de pedidos</title>
+</head>
+<body>
+
+<h1>Relatório de pedidos</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pedido</th>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for pedido in pedidos %}
+        <tr>
+            <td>{{pedido.id}}</td>
+            <td>{{pedido.cliente.nome}}</td>
+            <td>{{pedido.data_pedido}}</td>
+            <td>{{pedido.valor}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

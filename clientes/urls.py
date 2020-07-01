@@ -15,4 +15,5 @@ urlpatterns = [
     path('editar_pedido/<int:id>', editar_pedido, name='editar_pedido'),
     path('cadastrar_produto', inserir_produto, name='cadastrar_produto'),
     path('listar_produtos', listar_produtos, name='listar_produtos'),
+    path('gerar_relatorio_pedidos', gerar_pdf_pedidos, name='gerar_relatorio_pedidos'),
 ]
